@@ -198,7 +198,7 @@
 
      }
 
-     startAnimating(15)
+     startAnimating(20)
      stop()
 
 

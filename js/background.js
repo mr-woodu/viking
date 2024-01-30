@@ -166,7 +166,7 @@
                  $(".platform[data-pid=" + (closestPlatform.idx) + "]").addClass("current ")
          }
          platformPosY = (closestPlatform ? closestPlatform.y : containerHeight) - viking.height();
-         //$('#dot').css('top', (platformPosY + viking.height()) + 'px').css('left', centerContainer + 'px')
+         $('#dot').css('top', (platformPosY + viking.height()) + 'px').css('left', centerContainer + 'px')
 
 
          return platformPosY

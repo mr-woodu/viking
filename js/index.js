@@ -5,18 +5,23 @@ $(window).on("load", function() {
 
     viking.alignY(background.platformPosY())
 
-    const INITIAL_SPEED = 4;
+    const INITIAL_SPEED = 5;
 
     (function startAnimation() {
 
         function animate() {
             requestAnimationFrame(animate)
-
             background.updateFrame();
+        }
+
+
+        function animate1() {
+            requestAnimationFrame(animate1)
             viking.updateFrame(background.platformPosY());
         }
 
         requestAnimationFrame(animate)
+        requestAnimationFrame(animate1)
 
     })()
 

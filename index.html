@@ -13,12 +13,28 @@
     <script language="JavaScript" src="js/index.js"></script>
 
     <style>
+
+        body, html {
+            height: 100%;
+            margin: auto;
+        }
+
+        #center {
+            height: 100%;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
         #container {
             width: 100%;
+            margin: auto;
+            max-width: 1600px;
             height: 800px;
             /* Adjust as needed */
             overflow: hidden;
             position: relative;
+            border: 10px solid #000;
         }
         
         #dot {
@@ -69,14 +85,15 @@
 </head>
 
 <body>
-    <div id="container">
-        <div id="cloudsLayer" class="layer"></div>
-        <div id="buildingsLayer" class="layer"></div>
-        <div id="platformLayer" class="layer"></div>
-
+    <div id="center">
+        <div id="container">
+            <div id="cloudsLayer" class="layer"></div>
+            <div id="buildingsLayer" class="layer"></div>
+            <div id="platformLayer" class="layer"></div>
+            <canvas id="viking"></canvas>
+            <div id='dot'></div>    
+        </div>
     </div>
-    <canvas id="viking"></canvas>
-    <div id='dot'></div>
 </body>
 
 </html>
