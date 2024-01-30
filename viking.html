@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viking Jumper</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script language="JavaScript" src="js/viking.js"></script>
+    <script language="JavaScript" src="js/background.js"></script>
+    <script language="JavaScript" src="js/keyboard.js"></script>
+    <script language="JavaScript" src="js/index.js"></script>
+
+    <style>
+        #container {
+            width: 100%;
+            height: 800px;
+            /* Adjust as needed */
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #dot {
+            position: absolute;
+            width: 3px;
+            height: 2px;
+            background-color: red;
+        }
+        
+        #viking {
+            position: absolute;
+            top: 550px;
+            left: 50%;
+        }
+        
+        .layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            white-space: nowrap;
+            filter: drop-shadow(10px 10px 10px #222);
+            /* Keep images in line */
+        }
+        
+        .layer img {
+            position: absolute;
+            height: 100%;
+            display: inline-block;
+            object-fit: cover;
+        }
+        
+        .flip-horizontal {
+            transform: scaleX(-1);
+        }
+        
+        .platform {
+            position: absolute;
+            object-fit: cover;
+            -webkit-filter: drop-shadow(10px 10px 10px #222);
+            filter: drop-shadow(10px 10px 10px #222);
+        }
+        
+        .current {
+            x-background-color: red !important
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="cloudsLayer" class="layer"></div>
+        <div id="buildingsLayer" class="layer"></div>
+        <div id="platformLayer" class="layer"></div>
+
+    </div>
+    <canvas id="viking"></canvas>
+    <div id='dot'></div>
+</body>
+
+</html>
