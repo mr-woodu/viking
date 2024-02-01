@@ -29,6 +29,7 @@ $(window).on("load", function() {
 
     // Keyup event to clear the flag
     $(document).on('keydown', function(e) {
+        console.log("KD")
         if ((e.code === 'Space') && !viking.jumpInProgress()) {
             viking.setJumpInProgress(true);
         }

@@ -181,11 +181,14 @@
          // Slow down gradually when no key is pressed
          if (!isKeyPressed && (speed != 0)) {
              speed *= 0.94;
-             console.log("Pausing ...", speed)
              if (Math.abs(speed) < 0.7) {
                  viking.stop()
                  speed = 0; // Stop completely if speed is very low
              }
+
+             // TODO: FIX THIS
+             //console.log("Pausing ...", speed, viking.positionX(), scrollPosition)
+             //viking.setX(speed)
          }
 
          if (speed != 0 || isStarting) {
@@ -194,7 +197,6 @@
              moveAndCycleImages($buildingsLayer, speed, containerWidth);
 
              scrollPosition -= speed * 1.6; // Update scroll position based on speed
-             viking.setX(speed * -1.6)
              scrollPosition = Math.round(scrollPosition);
              displayPlatforms(platforms, containerWidth, scrollPosition);
          }

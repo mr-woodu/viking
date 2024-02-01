@@ -28,6 +28,7 @@
      const JUMP_HEIGHT = 200
      const JUMP_SPEED = 20
      const WALK_HEIGHT = 40; // how much height difference it can walk up
+     const BOTTOM_POS = 575;
 
      // Define the range of sprites to cycle through
      var startSpriteIndex = 0; // Index of the first sprite in the cycle
@@ -70,7 +71,7 @@
      }
 
      function setX(deltaX) {
-         let posX = canvas.css('left')
+         let posX = parseInt(canvas.css('left'))
          canvas.css('left', (posX + deltaX) + 'px');
      }
 
@@ -92,54 +93,62 @@
          doJump(platformPosY)
          redrawSprinte()
 
-         if (currentPosY != platformPosY)
-             console.log("Time=", time.toFixed(2), "pos=", currentPosY, "platform=", platformPosY, "dif=", currentPosY - parseInt(canvas.css("top")), "cycle", (time <= fullCycle))
-
      }
 
      var fallingTime = null; // Initialize outside the function
      var currentPosY = startingPosY;
+     var fallingToBottom = false;
 
      function doJump(platformPosY) {
+         if (fallingToBottom) platformPosY = BOTTOM_POS;
+
          if (jumpingInProgress && (elapsed > fpsInterval / 2)) {
              let falling = (time >= fullCycle / 2);
              let jumpPeak = startingPosY - JUMP_HEIGHT
 
+             time += 0.1;
+
              // Rising and falling phase - use sinusoidal function
-             if (time <= fullCycle) {
+             if (time < fullCycle) {
                  currentPosY = startingPosY - JUMP_HEIGHT * Math.sin(Math.PI * time / fullCycle);
              } else {
                  // Falling phase - linear descent
                  if (fallingTime === null) {
                      fallingTime = time; // Capture the time when the sprite starts falling
                  }
-                 currentPosY += (time - fallingTime) * JUMP_SPEED;
+                 currentPosY += JUMP_SPEED;
              }
 
              // Check if landed on the platform
-             if (falling && (((currentPosY >= platformPosY) && (jumpPeak <= platformPosY)) || (currentPosY >= startingPosY))) {
-                 //console.log("Landed")
+             if (falling && (((currentPosY >= platformPosY) && (jumpPeak <= platformPosY)) || (currentPosY >= BOTTOM_POS))) {
+                 //console.log("Landed", (currentPosY >= platformPosY), (jumpPeak <= platformPosY), (currentPosY >= startingPosY), "JPK=", jumpPeak, "PPY", platformPosY, "CPY", currentPosY, "SPY", startingPosY, "FALLING", falling)
                  if (jumpPeak <= platformPosY) currentPosY = platformPosY; // Land on the platform
                  jumpingInProgress = false; // Stop jumping
+                 fallingToBottom = false
                  startingPosY = currentPosY; // Update the starting position
                  fallingTime = null; // Reset the falling time
                  time = 0;
              }
 
              currentPosY = Math.round(currentPosY)
+                 //if ((currentPosY != platformPosY) && (currentPosY != BOTTOM_POS))
+                 //    console.log("Time=", time.toFixed(2), "pos=", currentPosY, "platform=", platformPosY, "dif=", currentPosY - parseInt(canvas.css("top")), "cycle", (time <= fullCycle), fallingTime ? time - fallingTime : 0)
+
+
              canvas.css('top', currentPosY + 'px');
-             time += 0.1;
 
              // End the jump if the full cycle is completed
+             /*
              if ((time >= fullCycle) && (fallingTime == null)) {
-                 //console.log("Completed")
+                 console.log("Completed")
                  jumpingInProgress = false;
                  time = 0;
                  fallingTime = null;
                  if (jumpPeak <= platformPosY) currentPosY = platformPosY;
                  startingPosY = currentPosY
                  canvas.css('top', startingPosY + 'px'); // Reset to original or platform position
-             }
+                 fallingToBottom = false;
+             }*/
 
              currentSprite = startSpriteIndex + 8;
          } else if (!jumpingInProgress) {
@@ -151,6 +160,13 @@
              } else if (currentPosY - WALK_HEIGHT < platformPosY) {
                  currentPosY = startingPosY = platformPosY
                  canvas.css('top', currentPosY + 'px');
+             } else if (currentPosY < BOTTOM_POS) {
+                 // i am under the platform
+                 //console.log("Bottom")
+                 fallingToBottom = true
+                 time = fullCycle / 2 + 0.1
+                 jumpingInProgress = true
+                 startingPosY = currentPosY + JUMP_HEIGHT
              }
          }
      }
@@ -208,7 +224,8 @@
 
          height: () => spriteHeight - 15,
          width: () => spriteWidth - (isMovingLeft ? -30 : 20),
-         postitionY: () => currentPosY,
+         positionY: () => currentPosY,
+         positionX: () => parseInt(canvas.css('left')),
          setX: setX,
 
          moveLeft: moveLeft,
